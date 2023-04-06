@@ -1,0 +1,48 @@
+<!-- HTML code for the form -->
+<form id="my-form">
+  <!-- Form fields -->
+  ...
+  <button type="submit" id="submit-btn">Submit</button>
+</form>
+
+<!-- HTML code for the download button -->
+<a id="download-btn" href="#" download>Download PDF</a>
+
+<!-- JavaScript code -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+<script>
+  const form = document.querySelector('#my-form');
+  const submitBtn = document.querySelector('#submit-btn');
+  const downloadBtn = document.querySelector('#download-btn');
+
+  // Add an event listener to the form's submit button
+  submitBtn.addEventListener('click', function(event) {
+    event.preventDefault();
+
+    // Collect the form data and store it in a JavaScript object
+    const formData = {
+      fullName: document.querySelector('#full-name').value,
+      state: document.querySelector('#state').value,
+      address: document.querySelector('#address').value,
+      city: document.querySelector('#city').value,
+      postalCode: document.querySelector('#postal-code').value,
+      email: document.querySelector('#email').value,
+      // Add additional form fields as needed
+    };
+
+    // Use jsPDF to generate a PDF document based on the form data
+    const doc = new jsPDF();
+    doc.text(`Full Name: ${formData.fullName}`, 10, 10);
+    doc.text(`State: ${formData.state}`, 10, 20);
+    doc.text(`Address: ${formData.address}`, 10, 30);
+    doc.text(`City: ${formData.city}`, 10, 40);
+    doc.text(`Postal Code: ${formData.postalCode}`, 10, 50);
+    doc.text(`Email: ${formData.email}`, 10, 60);
+    // Add additional text as needed
+
+    // Create a blob URL for the PDF document and set it as the href of the download button
+    const pdfBlob = doc.output('blob');
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+    downloadBtn.href = pdfUrl;
+  });
+</script>
